@@ -1,15 +1,14 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $text string */
-/* @var $product Product */
 
+/* @var $test TestService */
+
+use app\components\TestService;
 use app\models\Product;
 
 ?>
-    <p>
-        Test: <?=$text?>
-
-    </p>
+    <p>Test: <?=$test?></p>
 
 <?php
-echo \yii\widgets\DetailView::widget(['model' => $product]);
+
