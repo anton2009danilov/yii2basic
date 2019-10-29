@@ -45,14 +45,13 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'price', 'created_at'], RequiredValidator::class, 'on' => ['create', 'update']],
-            [['price'], NumberValidator::class, 'integerOnly' => true, 'min' => 0, 'max' => 1000,
-                'on' => ['create', 'update']],
+            [['name', 'price', 'created_at'], RequiredValidator::class],
+            [['price'], NumberValidator::class, 'integerOnly' => true, 'min' => 1, 'max' => 999],
 //            [['created_at'], DateValidator::class],
-            [['name'], StringValidator::class, 'max' => 20, 'on' => ['create', 'update']],
+            [['name'], StringValidator::class, 'max' => 20],
             [['name'], FilterValidator::class, 'filter' => function($name) {
-                return trim($name);
-            }, 'on' => ['create', 'update']],
+                return strip_tags(trim($name));
+            }],
         ];
     }
 
