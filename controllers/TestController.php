@@ -15,6 +15,16 @@ class TestController extends Controller
 {
     public function actionIndex() {
 
+        $product = new Product();
+
+
+//        $product->name = 'Volga';
+//        $product->price = 999;
+//        $product->created_at = 20191102;
+//        $product->save();
+
+//        _log($product);
+
         $test = (Yii::$app->test)->getProp();
         return $this->render('index', ['test'=>$test]);
     }
@@ -58,27 +68,26 @@ class TestController extends Controller
     }
 
     public function actionSelect() {
-        $query = new Query();
-//        VarDumper::dump($query->from('user')->where('id = 3')->all(),2, true);
+//        VarDumper::dump((new Query())->from('user')->where('id = 3')->all(),2, true);
 
-//        VarDumper::dump($query->from('user')->all(),2, true);
+//        VarDumper::dump((new Query()->from('user')->all(),2, true);
 
-//        VarDumper::dump($query->from('task')->all(),2, true);
+//        VarDumper::dump((new Query()->from('task')->all(),2, true);
 
-//        VarDumper::dump($query->from('user')->count(),2, true);
+//        VarDumper::dump((new Query()->from('user')->count(),2, true);
 
-//        VarDumper::dump($query->createCommand()->delete('user', 'id > 4')->execute(),2, true);
+//        VarDumper::dump((new Query()->createCommand()->delete('user', 'id > 4')->execute(),2, true);
 
-//        VarDumper::dump($query->createCommand()->delete('task', 'id < 5')->execute(),2, true);
+//        VarDumper::dump((new Query()->createCommand()->delete('task', 'id < 5')->execute(),2, true);
 
-//        VarDumper::dump($query->createCommand()->update('user',
+//        VarDumper::dump((new Query()->createCommand()->update('user',
 //            ['username' => 'user4', 'name' => 'test4'], ('id = 4'))->execute(),3, true);
 
-//        VarDumper::dump($query->from('user')
+//        VarDumper::dump((new Query()->from('user')
 //            ->where('id > 3')->orderBy('name')->all(),3, true);
 
-        VarDumper::dump($query->from('task')
-            ->innerJoin('user', 'task.creator_id = user.id')->all(),2, true);
+//        VarDumper::dump((new Query()->from('task')
+//            ->innerJoin('user', 'task.creator_id = user.id')->all(),2, true);
 
         die;
 
