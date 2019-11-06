@@ -43,74 +43,24 @@ class UserController extends Controller
 //        $user->access_token = '222';
 //        $user->save();
 
-//        $user = User::findOne(10);
+        $user = User::findOne(10);
+        $user->touch('updated_at');
+//        $user->data = ['str' => 'abc', 'num' => '20191112'];
 
-
-//        $task1 = new Task();
-//        $task1->title = 'new task1';
-//        $task1->description = 'some text';
-//        $task1->save();
-//        _log($task1->getErrors());
-//        $user->link($user::RELATION_CREATED_TASKS, $task1);
-
-//        $task2 = new Task();
-//        $task2->title = 'new task2';
-//        $task2->description = 'some text2';
-//        $task2->save();
-//        $user->link($user::RELATION_CREATED_TASKS, $task2);
-
-//        $task3 = new Task();
-//        $task3->title = 'new task3';
-//        $task3->description = 'some text3';
-//        $task3->save();
-//        $user->link($user::RELATION_CREATED_TASKS, $task3);
 //
 
 
 //        $users = User::find()->with(USER::RELATION_CREATED_TASKS)->asArray()->all();
-//        $users = User::find()->joinWith(USER::RELATION_CREATED_TASKS)->asArray()->all();
-
+//        $users = User::find()->joinWith(USER::RELATION_CREATED_TASKS, true)->asArray()->all();
+//        $users = User::find()->joinWith(USER::RELATION_CREATED_TASKS, false)->asArray()->all();
+//        _end($users);
 //        _log($users);
 //        _log($user->getErrors());
 
 
 
-//        $task_user1 = new TaskUser();
-//        $task_user1->user_id = 2;
-//        $task_user1->task_id = 5;
-//        $task_user1->save();
 
-//        $task_user2 = new TaskUser();
-//        $task_user2->user_id = 1;
-//        $task_user2->task_id = 6;
-//        $task_user2->save();
-
-//        $task_user3 = new TaskUser();
-//        $task_user3->user_id = 4;
-//        $task_user3->task_id = 7;
-//        $task_user3->save();
-
-//        $task_user4 = new TaskUser();
-//        $task_user4->user_id = 10;
-//        $task_user4->task_id = 8;
-//        $task_user4->save();
-
-//        $task_user5 = new TaskUser();
-//        $task_user5->user_id = 10;
-//        $task_user5->task_id = 11;
-//        $task_user5->save();
-
-//        $task_user6 = new TaskUser();
-//        $task_user6->user_id = 10;
-//        $task_user6->task_id = 12;
-//        $task_user6->save();
-
-//        $task_user7 = new TaskUser();
-//        $task_user7->user_id = 10;
-//        $task_user7->task_id = 5;
-//        $task_user7->save();
-
-        _end(User::findOne(10)->sharedTasks);
+//        _end(User::findOne(10)->sharedTasks);
 
 
 
