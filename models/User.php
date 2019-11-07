@@ -38,10 +38,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password) {
         $hash = $this->password_hash;
 
-        if (Yii::$app->getSecurity()->validatePassword($password, $hash)) {
-            return true;
-        } else
-            return false;
+        return Yii::$app->getSecurity()->validatePassword($password, $hash);
     }
 
     public function findByUserName($username) {
@@ -54,8 +51,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $this->auth_key = \Yii::$app->security->generateRandomString();
-        $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        if ($this->isNewRecord) {
+            $this->auth_key = \Yii::$app->security->generateRandomString();
+        }
+        if ($this->password) {
+            $this->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        }
 
         return true;
 
