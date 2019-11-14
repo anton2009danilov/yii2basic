@@ -7,6 +7,7 @@ use app\models\Task;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -41,14 +42,50 @@ class TaskController extends Controller
 
     }
 
-    /**
-     * Lists all Task models.
-     * @return mixed
-     */
+
     public function actionMy()
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Task::find()->byCreator(Yii::$app->user->id),
+        ]);
+
+        return $this->render('my', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionAccessed()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Task::find()
+                ->innerJoinWith(Task::RELATION_TASK_USERS)
+                ->where(['user_id' => Yii::$app->user->id])
+        ]);
+
+        return $this->render('accessed', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionShared()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Task::find()
+                ->byCreator(Yii::$app->user->id)
+                ->innerJoinWith(Task::RELATION_TASK_USERS),
+        ]);
+
+        return $this->render('shared', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    public function actionShare() {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Task::find()
+                ->byCreator(Yii::$app->user->id)
+                ->innerJoin('task-user'),
         ]);
 
         return $this->render('my', [
@@ -80,7 +117,7 @@ class TaskController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Task successfully created');
-            return $this->redirect(['my', 'id' => $model->id]);
+            return $this->redirect(['task/my', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -94,13 +131,18 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        if($model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException();
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Task successfully updated');
+            return $this->redirect(['task/view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -114,12 +156,19 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if($model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException();
+        }
 
-        return $this->redirect(['index']);
+        $model->delete();
+        Yii::$app->session->setFlash('success', 'Task successfully deleted');
+
+        return $this->redirect(['task/my']);
     }
 
     /**
