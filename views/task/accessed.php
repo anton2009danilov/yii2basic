@@ -3,6 +3,7 @@
 use app\models\Task;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -28,9 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'creator name',
                 'value' => function(\app\models\Task $model) {
+                    $user = $model->getCreator();
                     $names = $model->getCreator()->select('username')->column();
-                    return join(', ', $names);
-                }
+                    return Html::a(Html::encode(join(', ', $names)),
+                        Url::to(['user/view', 'id' => $model->creator_id]));
+                },
+                'format' => 'html',
+
             ],
             'created_at:datetime',
             [
