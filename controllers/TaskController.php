@@ -80,19 +80,6 @@ class TaskController extends Controller
         ]);
     }
 
-
-    public function actionShare() {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Task::find()
-                ->byCreator(Yii::$app->user->id)
-                ->innerJoin('task-user'),
-        ]);
-
-        return $this->render('my', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
     /**
      * Displays a single Task model.
      * @param integer $id
